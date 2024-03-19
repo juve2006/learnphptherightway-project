@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Transactions</title>
         <style>
@@ -34,20 +34,44 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- YOUR CODE -->
+                     <?php if (! empty($content)): ?>
+                         <?php foreach($content as $transaction): ?>
+                             <tr>
+                                 <td><?= formatDate($transaction['date']) ?></td>
+                                 <td style="background-color: <?= $transaction['checkNumber'] ? 'lightgreen' : 'white'?>">
+                                      <?= $transaction['checkNumber']?>
+                                 </td>
+                                 <td><?= $transaction['description'] ?></td>
+                                 <td>
+                                     <?php if ($transaction['amount'] < 0): ?>
+                                         <span style="color: red;">
+                                        <?= formatAmount($transaction['amount'])?>
+                                    </span>
+                                     <?php elseif ($transaction['amount'] > 0): ?>
+                                         <span style="color: green;">
+                                        <?= formatAmount($transaction['amount'])?>
+                                    </span>
+                                     <?php else: ?>
+                                         <?= formatAmount($transaction['amount']) ?>
+                                     <?php endif ?>
+                                 </td>
+                             </tr>
+                         <?php endforeach ?>
+
+                     <?php endif;?>
             </tbody>
             <tfoot>
                 <tr>
                     <th colspan="3">Total Income:</th>
-                    <td><!-- YOUR CODE --></td>
+                    <td><?php echo formatAmount($totals['totalIncome']); ?></td>
                 </tr>
                 <tr>
                     <th colspan="3">Total Expense:</th>
-                    <td><!-- YOUR CODE --></td>
+                    <td><?php echo formatAmount($totals['totalExpense']); ?></td>
                 </tr>
                 <tr>
                     <th colspan="3">Net Total:</th>
-                    <td><!-- YOUR CODE --></td>
+                    <td><?php echo formatAmount($totals['netTotal']); ?></td>
                 </tr>
             </tfoot>
         </table>

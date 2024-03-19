@@ -9,11 +9,15 @@ define('FILES_PATH', $root . 'transaction_files' . DIRECTORY_SEPARATOR);
 define('VIEWS_PATH', $root . 'views' . DIRECTORY_SEPARATOR);
 
 require (APP_PATH. 'App.php');
-require (VIEWS_PATH. 'transactions.php');
 
 $files = getTransactionFiles(FILES_PATH);
 
+$content = [];
+
 foreach ($files as $file) {
-    $content = getContent($file, 'parseRow');
-    var_dump($content);
+    $content = array_merge($content, getContent($file, 'parseRow'));
 }
+
+$totals = getTotals($content);
+
+require (VIEWS_PATH. 'transactions.php');

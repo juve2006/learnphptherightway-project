@@ -43,11 +43,40 @@ function parseRow(array $row): array
 {
     [$date, $checkNumber, $description, $amount] = $row;
 
+    $amount = (float) str_replace(['$', ','], '', $amount);
+
     return [
         'date'        => $date,
         'checkNumber' => $checkNumber,
         'description' => $description,
         'amount'      => $amount,
     ];
+}
+
+function getTotals(array $transactions): array
+{
+    $totals = ['netTotal' => 0, 'totalIncome' => 0, 'totalExpense' => 0];
+
+    foreach ($transactions as $transaction) {
+        $totals['netTotal'] += $transaction['amount'];
+
+        if ($transaction['amount'] >= 0) {
+            $totals['totalIncome'] += $transaction['amount'];
+        } else {
+            $totals['totalExpense'] += $transaction['amount'];
+        }
+    }
+
+    return $totals;
+}
+
+function formatDate(string $date): string
+{
+    return date("M d, Y", strtotime($date));
+}
+
+function formatAmount(float $amount): string
+{
+    return '$'. number_format($amount, 2, '.', ',');
 }
 
