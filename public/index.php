@@ -11,4 +11,9 @@ define('VIEWS_PATH', $root . 'views' . DIRECTORY_SEPARATOR);
 require (APP_PATH. 'App.php');
 require (VIEWS_PATH. 'transactions.php');
 
-var_dump(getTransactionFiles(FILES_PATH));
+$files = getTransactionFiles(FILES_PATH);
+
+foreach ($files as $file) {
+    $content = getContent($file, 'parseRow');
+    var_dump($content);
+}
